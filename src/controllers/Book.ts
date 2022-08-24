@@ -22,7 +22,7 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
 const readBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bookId = req.params.bookId;
-    const book = await Book.findById(bookId);
+    const book = await Book.findById(bookId).populate('author');
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
@@ -38,7 +38,7 @@ const readAllBooks = async (
   next: NextFunction
 ) => {
   try {
-    const books = await Book.find({});
+    const books = await Book.find({}).populate('author');
     return res.status(200).json({ books });
   } catch (error) {
     return res.status(500).json({ error });
